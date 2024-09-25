@@ -60,15 +60,17 @@ def test_scenario_la(setup_browser):
         element.click()
         time.sleep(5)
 
+        WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, "username"))).click()
+        time.sleep(5)
         # Navigate to a specific page
         # driver.get("https://nextv3.thinktalent.info/vdc-user/user/batch-wizard/D34A3C827BDEFC40BC84BE32DB22A0A0")
         time.sleep(5)
 
         # Click dropdown toggle and log out
-        driver.find_element(By.CSS_SELECTOR, "li.dropdown.nav-item > a.pro-pic.dropdown-toggle.nav-link").click()
+        driver.find_element(By.CSS_SELECTOR, ".nav-item > .nav-link").click()
         time.sleep(5)
         driver.find_element(By.CSS_SELECTOR,
-                            "li.dropdown.nav-item > div.user-dd.dropdown-menu.dropdown-menu-right > a.dropdown-item").click()
+                            ".nav-item > div.user-dd.dropdown-menu.dropdown-menu-right > a.dropdown-item").click()
         time.sleep(5)
 
 
@@ -79,7 +81,7 @@ def test_is_element_present(setup_browser):
         try:
             driver.find_element(by=how, value=what)
             # Explicit wait to ensure the element is available
-            WebDriverWait(driver, 10).until(EC.presence_of_element_located((how, what)))
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((how, 'what')))
             return True
         except NoSuchElementException:
             return False
