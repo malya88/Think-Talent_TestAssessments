@@ -1,0 +1,50 @@
+curl Bash for Sucessful video record  for more less than 2mnt 
+
+
+The ElementNotInteractableException indicates that the Selenium test is trying to interact with an element (e.g., click or send text) that is present in the DOM but cannot be interacted with at the moment. Here are a few common causes and steps to resolve this issue:
+
+Possible Causes:
+Element is hidden or not visible: The element might be in the DOM but hidden (e.g., CSS properties like display: none or visibility: hidden).
+Element is not yet fully loaded or rendered: The page might still be loading, and the element isn’t ready for interaction.
+Another element is overlapping the element: Sometimes, elements are covered by others (like a loading spinner or modal), making them not interactable.
+Focus or state issue: Some elements may require focus or other actions before they can be interacted with.
+Solutions:
+Wait for the element to be clickable: Use Selenium’s WebDriverWait with element_to_be_clickable. This ensures the element is both present and interactable.
+
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "username"))).click()
+
+
+This ensures the element is clickable before performing the action.
+
+Scroll into view: If the element is off-screen or not fully visible, you can use JavaScript to scroll it into view:
+
+element = driver.find_element(By.ID, "username")
+driver.execute_script("arguments[0].scrollIntoView();", element)
+element.click()  # Or interact with it
+
+
+Ensure Element is Visible: Check if the element has visibility or display issues before interacting:
+element = driver.find_element(By.ID, "username")
+assert element.is_displayed(), "Element is not visible"
+
+
+Wait for Element Visibility: If the issue is visibility, use visibility_of_element_located to wait for the element to be visible:
+
+WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "username"))).send_keys("your_value")
+Debugging Steps:
+Check the Element's Attributes: You can print or log the element’s attributes, such as visibility, position, and display status, to verify its state before interaction:
+
+element = driver.find_element(By.ID, "username")
+print(element.is_displayed())  # Check if it’s visible
+print(element.is_enabled())    # Check if it’s enabled
+
+
+Check for Overlapping Elements: Sometimes, an element is obscured by another (e.g., modal, loading spinner). Use selenium.webdriver.ActionChains to move to the element or dismiss an overlay first.
+
+Next Steps:
+Try implementing one or more of the above solutions based on the context of your test case.
+If the issue persists, consider sharing the relevant part of the code or the specific structure of the page you're testing, so I can provide more targeted guidance.
